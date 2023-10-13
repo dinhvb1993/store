@@ -1,9 +1,13 @@
 let num1 = atob('MDkzNjMyNjQ0OA==');
-let num2 = atob('MDgyODk0Mjk0OA==');
+
+
+// var zalo_acc = {
+//     // "sdtzalo2" : "mã qr code 2",
+// };
+
 
 var zalo_acc = [];
 zalo_acc[num1] = "zurgukk3yl6x";
-zalo_acc[num2] = "9cp1ax6sh0ne";
 
 
 function devvnCheckLinkAvailability(link, successCallback, errorCallback) {
@@ -17,9 +21,8 @@ function devvnCheckLinkAvailability(link, successCallback, errorCallback) {
     var timeout = setTimeout(function () {
         errorCallback("Link is not supported.");
         window.removeEventListener("blur", handleBlur);
-    }, 2500);
+    }, 2500); // Đặt timeout (2.5 giây) để kiểm tra liên kết. Thay đổi số này lên 5000 nếu bạn chưa chạy được
     var result = {};
-
     function handleMouseMove(event) {
         if (!result.x) {
             result = {
@@ -28,12 +31,10 @@ function devvnCheckLinkAvailability(link, successCallback, errorCallback) {
             };
         }
     }
-
     function handleBlur() {
         clearTimeout(timeout);
         window.addEventListener("mousemove", handleMouseMove);
     }
-
     window.addEventListener("blur", handleBlur);
     window.addEventListener(
         "focus",
@@ -51,7 +52,8 @@ function devvnCheckLinkAvailability(link, successCallback, errorCallback) {
                         var alertWidth = 300;
                         var alertHeight = 100;
                         var isXInRange =
-                            pos.x - 100 < 0.5 * (screenWidth + alertWidth) && pos.x + 100 > 0.5 * (screenWidth + alertWidth);
+                            pos.x - 100 < 0.5 * (screenWidth + alertWidth) &&
+                            pos.x + 100 > 0.5 * (screenWidth + alertWidth);
                         var isYInRange =
                             pos.y - 40 < alertHeight && pos.y + 40 > alertHeight;
                         return isXInRange && isYInRange
@@ -66,17 +68,13 @@ function devvnCheckLinkAvailability(link, successCallback, errorCallback) {
                 window.removeEventListener("mousemove", handleMouseMove);
             }, 500);
         },
-        {once: true}
+        { once: true }
     );
     hiddenIframe.contentWindow.location.href = link;
 }
-
-
-
-
-Object.keys(zalo_acc).map(function (sdt, index) {
+Object.keys(zalo_acc).map(function(sdt, index) {
     let qrcode = zalo_acc[sdt];
-    const zaloLinks = document.querySelectorAll('a[href*="zalo.me/' + sdt + '"]');
+    const zaloLinks = document.querySelectorAll('a[href*="zalo.me/'+sdt+'"]');
     zaloLinks.forEach((zalo) => {
         zalo.addEventListener("click", (event) => {
             event.preventDefault();
@@ -85,13 +83,13 @@ Object.keys(zalo_acc).map(function (sdt, index) {
             const isAndroid = /android/.test(userAgent);
             let redirectURL = null;
             if (isIOS) {
-                redirectURL = 'zalo://qr/p/' + qrcode;
+                redirectURL = 'zalo://qr/p/'+qrcode;
                 window.location.href = redirectURL;
             } else if (isAndroid) {
-                redirectURL = 'zalo://zaloapp.com/qr/p/' + qrcode;
+                redirectURL = 'zalo://zaloapp.com/qr/p/'+qrcode;
                 window.location.href = redirectURL;
             } else {
-                redirectURL = 'zalo://conversation?phone=' + sdt;
+                redirectURL = 'zalo://conversation?phone='+sdt;
                 zalo.classList.add("zalo_loading");
                 devvnCheckLinkAvailability(
                     redirectURL,
@@ -100,7 +98,7 @@ Object.keys(zalo_acc).map(function (sdt, index) {
                     },
                     function (error) {
                         zalo.classList.remove("zalo_loading");
-                        redirectURL = 'https://chat.zalo.me/?phone=' + sdt;
+                        redirectURL = 'https://chat.zalo.me/?phone='+sdt;
                         window.location.href = redirectURL;
                     }
                 );
@@ -108,7 +106,7 @@ Object.keys(zalo_acc).map(function (sdt, index) {
         });
     });
 });
-
+//Thêm css vào site để lúc ấn trên pc trong lúc chờ check chuyển hướng sẽ không ấn vào thẻ a đó được nữa
 var styleElement = document.createElement("style");
 var cssCode = ".zalo_loading { pointer-events: none; }";
 styleElement.innerHTML = cssCode;
