@@ -33,6 +33,9 @@
     let url = "https://tool.quanlyads.com/api-detect-user/collect";
 
     let target_link = window.location.href;
+
+    console.log('abc');
+
     if (
         findGetParameter('gclid') != null || findGetParameter('gad_source') != null
         || findGetParameter('fbclid') != null || findGetParameter('utm_source') == "coccoc_context"
